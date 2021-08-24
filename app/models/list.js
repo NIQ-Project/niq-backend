@@ -1,14 +1,18 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose')
+const User = require('./user')
+const taskSchema = require('./task')
 
 const listSchema = new mongoose.Schema({
+  month: {
+    type: Number,
+    required: true
+  },
   name: {
     type: String,
     required: true
   },
-  tasks: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Task'
-  }],
+  tasks: [taskSchema],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
