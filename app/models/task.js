@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 const mongoose = require('mongoose')
+const List = require('./list')
 
 const taskSchema = new mongoose.Schema({
   item: {
@@ -14,4 +16,4 @@ const taskSchema = new mongoose.Schema({
   timestamps: true
 })
 
-module.exports = mongoose.model('Task', taskSchema)
+module.exports = taskSchema

@@ -27,48 +27,26 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-// INDEX
-// GET /tasks
-router.get('/tasks', requireToken, (req, res, next) => {
-  Task.find()
-    .then(tasks => {
-      // `tasks` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return tasks.map(task => task.toObject())
-    })
-    // respond with status 200 and JSON of the tasks
-    .then(tasks => res.status(200).json({ tasks: tasks }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
-})
-
-// SHOW
-
-// NEED TO POPULATE
-
-// GET /tasks/5a7db6c74d55bc51bdf39793
 router.get('/tasks/:id', requireToken, (req, res, next) => {
-  // req.params.id will be set based on the `:id` in the route
   Task.findById(req.params.id)
-    .then(handle404)
-    // if `findById` is succesful, respond with 200 and "task" JSON
-    .then(task => res.status(200).json({ task: task.toObject() }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
+    .then(task => console.log(task))
 })
 
 // CREATE
 // POST /tasks
-router.post('/tasks', requireToken, (req, res, next) => {
-  // set owner of new task to be current user
-  req.body.task.owner = req.user.id
+router.post('/tasks/:id', requireToken, (req, res, next) => {
+  // find the list we're going add the task to
+  List.findById(req.params.id)
+    .then(list => {
+      list.tasks.push({
+        item: req.body.task.item,
+        owner: req.body.user._id
+      })
 
-  Task.create(req.body.task)
-    // respond to successful `create` with status 201 and JSON of new "task"
-    .then(task => {
-      res.status(201).json({ task: task.toObject() })
+      return list.save()
     })
+    // respond to successful `create` with status 201 and JSON of new "task"
+    .then(list => res.status(201).json({ list: list.toObject() }))
     // if an error occurs, pass it off to our error handler
     // the error handler needs the error message and the `res` object so that it
     // can send an error message back to the client
@@ -100,15 +78,11 @@ router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
 
 // DESTROY
 // DELETE /tasks/5a7db6c74d55bc51bdf39793
-router.delete('/tasks/:id', requireToken, (req, res, next) => {
-  Task.findById(req.params.id)
-    .then(handle404)
-    .then(task => {
-      // throw an error if current user doesn't own `task`
-      requireOwnership(req, task)
-      // delete the task ONLY IF the above didn't throw
-      task.deleteOne()
-    })
+router.delete('/tasks/:id/:taskId', requireToken, (req, res, next) => {
+  list.findById(req.params.id)
+    .then(list => list.tasks.id(taskId))
+    .then(task => {task.remove(); console.log('deleted', task.toJSON())})
+    
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
