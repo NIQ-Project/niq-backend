@@ -10,7 +10,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  token: String
+  token: String,
+  list: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'List'
+  }
 }, {
   timestamps: true,
   toObject: {
