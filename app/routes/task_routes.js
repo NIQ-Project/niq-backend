@@ -27,16 +27,20 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
+router.get('/tasks/:id', requireToken, (req, res, next) => {
+  Task.findById(req.params.id)
+    .then(task => console.log(task))
+})
+
 // CREATE
 // POST /tasks
-router.post('/tasks', requireToken, (req, res, next) => {
+router.post('/tasks/:id', requireToken, (req, res, next) => {
   // find the list we're going add the task to
-  List.findById(req.body.listId)
-    
+  List.findById(req.params.id)
     .then(list => {
       list.tasks.push({
         item: req.body.task.item,
-        owner: req.user._id
+        owner: req.body.user._id
       })
 
       return list.save()
@@ -77,6 +81,8 @@ router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
 router.delete('/tasks/:id/:taskId', requireToken, (req, res, next) => {
   list.findById(req.params.id)
     .then(list => list.tasks.id(taskId))
+    .then(task => {task.remove(); console.log('deleted', task.toJSON())})
+    
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
