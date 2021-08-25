@@ -36,7 +36,8 @@ router.post('/tasks/:id', requireToken, (req, res, next) => {
     .then(list => {
       list.tasks.push({
         item: req.body.task.item,
-        owner: req.params.id
+        owner: req.params.id,
+        done: req.body.task.done
       })
 
       return list.save()
@@ -62,13 +63,14 @@ router.get('/tasks/:id/:taskId', requireToken, (req, res, next) => {
 
 // UPDATE
 // PATCH /tasks/5a7db6c74d55bc51bdf39793
-router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/tasks/:id/taskId', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.task.owner
 
   List.findById(req.params.id)
     .then(handle404)
+    .then(list => list.tasks.id(req.params.taskId))
     .then(task => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
@@ -86,10 +88,15 @@ router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /tasks/5a7db6c74d55bc51bdf39793
 router.delete('/tasks/:id/:taskId', requireToken, (req, res, next) => {
-  list.findById(req.params.id)
+  List.findById(req.params.id)
     .then(handle404)
-    .then(list => list.tasks.id(req.params.taskId))
-    .then(task => {task.remove(); console.log('deleted', task.toJSON())})
+    // The
+    .then(list => {
+      list.tasks.pull(req.params.taskId)
+      list.save()
+      return list
+    })
+    .then(list => console.log('deleted', list.tasks.toJSON()))
     
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
