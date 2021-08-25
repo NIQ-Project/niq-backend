@@ -52,7 +52,7 @@ router.get('/lists/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   List.findById(req.params.id)
     .then(handle404)
-    // if `findById` is succesful, respond with 200 and "list" JSON
+    // if `findById` is successful, respond with 200 and "list" JSON
     .then(list => res.status(200).json({ list: list.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
