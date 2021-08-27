@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // pull in Mongoose model for tasks
-const Task = require('../models/task')
+const List = require('../models/list')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -27,11 +27,6 @@ const requireToken = passport.authenticate('bearer', { session: false })
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
 
-router.get('/tasks/:id', requireToken, (req, res, next) => {
-  Task.findById(req.params.id)
-    .then(task => console.log(task))
-})
-
 // CREATE
 // POST /tasks
 router.post('/tasks/:id', requireToken, (req, res, next) => {
@@ -40,7 +35,8 @@ router.post('/tasks/:id', requireToken, (req, res, next) => {
     .then(list => {
       list.tasks.push({
         item: req.body.task.item,
-        owner: req.body.user._id
+        owner: req.params.id,
+        done: req.body.task.done
       })
 
       return list.save()
@@ -53,22 +49,37 @@ router.post('/tasks/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+// SHOW
+// GET /tasks/5a7db6c74d55bc51bdf39793/e13l1420995bc51bdf39793
+router.get('/tasks/:id/:taskId', requireToken, (req, res, next) => {
+  List.findById(req.params.id)
+    .then(handle404)
+    .then(list => list.tasks.id(req.params.taskId))
+    .then(task => res.status(200).json({ task: task.toObject() }))
+    // if an error occurs, pass it to the handler
+    .catch(next)
+})
+
 // UPDATE
 // PATCH /tasks/5a7db6c74d55bc51bdf39793
-router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
+router.patch('/tasks/:id/:taskId', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.task.owner
 
-  Task.findById(req.params.id)
+  List.findById(req.params.id)
     .then(handle404)
-    .then(task => {
+    // .then(list => list.tasks.id(req.params.taskId))
+    .then(list => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, task)
+      const task = list.tasks.id(req.params.taskId)
 
+      requireOwnership(req, list)
+
+      task.set(req.body.task)
       // pass the result of Mongoose's `.update` to the next `.then`
-      return task.updateOne(req.body.task)
+      return list.save()
     })
     // if that succeeded, return 204 and no JSON
     .then(() => res.sendStatus(204))
@@ -79,10 +90,15 @@ router.patch('/tasks/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /tasks/5a7db6c74d55bc51bdf39793
 router.delete('/tasks/:id/:taskId', requireToken, (req, res, next) => {
-  list.findById(req.params.id)
-    .then(list => list.tasks.id(taskId))
-    .then(task => {task.remove(); console.log('deleted', task.toJSON())})
-    
+  List.findById(req.params.id)
+    .then(handle404)
+    // The
+    .then(list => {
+      list.tasks.pull(req.params.taskId)
+      list.save()
+      return list
+    })
+    .then(list => console.log('deleted', list.toJSON()))
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler
