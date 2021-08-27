@@ -55,7 +55,7 @@ router.get('/tasks/:id/:taskId', requireToken, (req, res, next) => {
   List.findById(req.params.id)
     .then(handle404)
     .then(list => list.tasks.id(req.params.taskId))
-    .then(task => res.status(200).json({ task: task.toObject() })) 
+    .then(task => res.status(200).json({ task: task.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
 })
