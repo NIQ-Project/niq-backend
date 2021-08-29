@@ -44,3 +44,23 @@ Delete single resource (curl then web app)
 # final touches
 styling 
 trouble shooting 
+
+## description
+ Get started using monthly! First, create an account to help you keep track of your monthly goals and lists. Next, select “View Lists” and from there you will be able to view, create, or edit your list for the desired month. Additionally, on this screen you will be able to add tasks or goals to any of the lists created. Help yourself get back on track and have fun doing it with Monthly!
+
+ # routes 
+`/sign-up` - used for signing up a user
+`/sign-in` - used for signing in a user
+`/sign-out` - used for signing out a user
+`/change-password` - used for changing a users password
+`/tasks/:id/:taskId` - used for showing task
+`/tasks/:id/:taskId` - used for updating a task
+`/tasks/:id/:taskId` - used for deleting a task
+`/tasks/:id` - used for creating a task
+`/lists` - used for show all list
+`/lists/:id` - used for getting a single list
+`/lists` - used to create a list 
+`/lists/:id` - used to update a list 
+`/lists/:id` - used for deleting a list 
+
+
