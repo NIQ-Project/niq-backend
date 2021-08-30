@@ -1,66 +1,294 @@
-# NIQ Project Back-end Read.Me
+![LOGO](./NavBarLogo.png) <br />
+made by Nick W, Quiahn B, Ivan L
 
-Made by Nick W, Ivan L, Quiahn B
-# NIQ project 
-Bucket list idea 
-## Git Hub url
-https://github.com/NIQ-Project/niq
-https://github.com/NIQ-Project/niq-backend
+## `Urls`
+- [Back End GitHub Link](https://github.com/NIQ-Project/niq-backend "Monthly's Back-End Repository")
+- [Deployed Site](https://niq-project.github.io/niq/ "Monthly Website")
+- [Back-End](https://git.heroku.com/monthly-backend.git "Monthly's Back-End Website")
+
+## `Pitch`
+Got a bucket list of things to do before the end of the month? Use Monthly! Monthly is a service that helps you track all of your monthly goals and tasks by oraganizing every month into a list.
+
+## `How It Works`
+Users get started by creating an account then logging in. From there they are able to create lists and assign them a month, then create tasks within their lists.
+
+## `Project Goals`
+Our goals for this project is to work as an agile team and work together to problem solve, code, and squash bugs for our app that helps people keep track of their bucket list.
+
+## `API Routes`
+
+### `/sign-up`
+- Used for signing up a user
+- Method: POST
+- Expects:
+  - Email, Password, Password Confirmation
+  - Example:
+  - ``const signUp = (credentials) => {
+  return axios({
+    method: 'POST',
+    url: apiUrl + '/sign-up/',
+    data: {
+      credentials: {
+        email: credentials.email,
+        password: credentials.password,
+        password_confirmation: credentials.passwordConfirmation
+      }
+    }
+  })
+}``
+
+### `/sign-in`
+- Used for signing in a user
+- Method: POST
+- Expects:
+  - Email, Password
+  - Example:
+  - ``const signIn = (credentials) => {
+  return axios({
+    url: apiUrl + '/sign-in/',
+    method: 'POST',
+    data: {
+      credentials: {
+        email: credentials.email,
+        password: credentials.password
+      }
+    }
+  })
+}``
+
+### `/sign-out`
+- Used for signing out a user
+- Method: DELETE
+- Expects:
+  - User Token
+  - Example:
+  - ``const signOut = (user) => {
+  return axios({
+    url: apiUrl + '/sign-out/',
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/change-password`
+- Used for changing a users password
+- Expects:
+  - User Token, Old Password, New Password
+  - Example:
+  - ``const changePassword = (passwords, user) => {
+  return axios({
+    url: apiUrl + '/change-password/',
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    },
+    data: {
+      passwords: {
+        old: passwords.oldPassword,
+        new: passwords.newPassword
+      }
+    }
+  })
+}``
+
+### `/lists`
+- Used for show all list
+- Method: GET
+- Expects: 
+  - User Token
+  - Example:
+  - ``const indexList = (user) => {
+  return axios({
+    url: apiUrl + '/lists',
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/lists`
+- Used to create a list 
+- Method: POST
+- Expects:
+  - User Token
+  - Example:
+  - ``const createList = (data, user) => {
+  return axios({
+    url: apiUrl + '/lists',
+    method: 'post',
+    data: { list: data },
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/lists/:id`
+- Used for getting a single list
+- Method: GET
+- Expects:
+  - User Token
+  - Example:
+  - ``export const showList = (id, user) => {
+  return axios({
+    url: apiUrl + '/lists/' + id,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/lists/:id`
+- Used to update a list
+- Method: PATCH
+- Expects:
+  - User Token, List Name, List Month
+  - Example:
+  - ``const updateList = (listData, id, user) => {
+  return axios({
+    method: 'PATCH',
+    url: apiUrl + '/lists/' + id,
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    },
+    data: { list: listData }
+  })
+}``
+
+### `/lists/:id`
+- Used for deleting a list
+- Method: DELETE
+- Expects:
+  - User Token
+  - Example:
+  - ``const deleteList = (id, user) => {
+  return axios({
+    url: apiUrl + '/lists/' + id,
+    method: 'delete',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/tasks/:id`
+- Used for creating a task
+- Method: POST
+- Expects:
+  - User Token
+  - Example:
+  - ``const createTask = (id, data, user) => {
+  return axios({
+    url: apiUrl + '/tasks/' + id,
+    method: 'post',
+    data: { task: data },
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/tasks/:id/:taskId`
+- Used for showing task
+- Method: GET
+- Expects:
+  - User Token
+  - Example:
+  - ``const showTask = (id, user, taskId) => {
+  return axios({
+    url: apiUrl + '/tasks/' + id + '/' + taskId,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
+
+### `/tasks/:id/:taskId`
+- Used for updating a task
+- Method: PATCH
+- Expects:
+  - User Token, Task Name, Task Done
+  - Example:
+  - ``const updateTask = (taskData, id, user, taskId) => {
+  return axios({
+    method: 'PATCH',
+    url: apiUrl + '/tasks/' + id + '/' + taskId,
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    },
+    data: { task: taskData }
+  })
+}``
+
+### `/tasks/:id/:taskId`
+- Used for deleting a task
+- Method: DELETE
+- Expects:
+  - User Token
+  - Example:
+  - ``const deleteTask = (id, user, taskId) => {
+  return axios({
+    url: apiUrl + '/tasks/' + id + '/' + taskId,
+    method: 'delete',
+    headers: {
+      Authorization: `Bearer ${user.token}`
+    }
+  })
+}``
 
 
-# Pitch
-users can sign up and make a monthly bucket list and add and check off task or events they complete.
 
-# Project Goals
-Our goals for this project is to work as an agile team and work together to problem solve code and bugs for our app that helps people keep track of their bucket list. We will also be using post man to set up our backEnd api calls 
-
-# Documentation
-Create 2 Github repos (one for your front-end and one for your back-end)
- Pin both repositories on GitHub as a Popular Repository
-Both front-end and back-end repos should include README's with:
-
-# tech used
-we will be using html, css, bootstrap, react, mongoose, and JSX
-
-# ERD
+## `ERD`
 A user has a many list and the list has many items.
 ![ERD Image](https://i.imgur.com/VAtPHTv.png)
-# Planning
-planning for project
-download api temp
-set up template 
-download front end 
-set up template 
-set us post man back end 
-finish backend 
-start front end 
-Create your resource and end points
-CRUD
-Create resource (curl then web app)
-Read all of their owned resources (curl then web app)
-Update single resource (curl then web app)
-Delete single resource (curl then web app)
 
-# final touches
-styling 
-trouble shooting 
+## `Planning Time Table`
 
-## description
- Get started using monthly! First, create an account to help you keep track of your monthly goals and lists. Next, select “View Lists” and from there you will be able to view, create, or edit your list for the desired month. Additionally, on this screen you will be able to add tasks or goals to any of the lists created. Help yourself get back on track and have fun doing it with Monthly!
+### Day 1:
+- Plan for project
+- Download api template
+- Set up api template 
+- Download front-end template
+- Set up front-end template
 
- # routes 
-`/sign-up` - used for signing up a user
-`/sign-in` - used for signing in a user
-`/sign-out` - used for signing out a user
-`/change-password` - used for changing a users password
-`/tasks/:id/:taskId` - used for showing task
-`/tasks/:id/:taskId` - used for updating a task
-`/tasks/:id/:taskId` - used for deleting a task
-`/tasks/:id` - used for creating a task
-`/lists` - used for show all list
-`/lists/:id` - used for getting a single list
-`/lists` - used to create a list 
-`/lists/:id` - used to update a list 
-`/lists/:id` - used for deleting a list 
+### Day2:
+- Start back-end routes and test with postman
+- Start front-end
+
+### Day3:
+- Keep working on front-end and back-end
+- plan for styling
+
+### Day 4:
+- Finish front-end
+- Finish back-end
+- Start styling
+
+### Day 5-7
+- Complete Styling
+
+## `Technology Used`
+
+### React
+### Axios
+### Bootstrap
+### SASS
+### Express
+### Mongoose
+### Mongo
+### Passport
+### JWT
+### BCrpyt
 
 
+## `Unsolved Problems`
+
+- Signing up automatically signs user in but doesn't save the log in
+- Remember me feature needs to be reworked
+- Website's styling isn't complete
+- User can edit list after the month it's created
