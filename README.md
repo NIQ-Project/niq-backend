@@ -123,7 +123,7 @@ const indexList = (user) => {
 - Used to create a list 
 - Method: POST
 - Expects:
-  - User Token
+  - User Token, List Name, List Month
   - Example:
 ``` js
 const createList = (data, user) => {
@@ -197,7 +197,7 @@ const deleteList = (id, user) => {
 - Used for creating a task
 - Method: POST
 - Expects:
-  - User Token
+  - User Token, Task Name, Task Done (Boolean)
   - Example:
 ``` js
 const createTask = (id, data, user) => {
@@ -234,7 +234,7 @@ const showTask = (id, user, taskId) => {
 - Used for updating a task
 - Method: PATCH
 - Expects:
-  - User Token, Task Name, Task Done
+  - User Token, Task Name, Task Done (Boolean)
   - Example:
 ``` js
 const updateTask = (taskData, id, user, taskId) => {
