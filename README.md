@@ -7,7 +7,7 @@ made by Nick W, Quiahn B, Ivan L
 - [Back-End](https://git.heroku.com/monthly-backend.git "Monthly's Back-End Website")
 
 ## `Pitch`
-Got a bucket list of things to do before the end of the month? Use Monthly! Monthly is a service that helps you track all of your monthly goals and tasks by oraganizing every month into a list.
+Got a bucket list of things to do before the end of the month? Use Monthly! Monthly is a service that helps you track all of your monthly goals and tasks by organizing every month into a list.
 
 ## `How It Works`
 Users get started by creating an account then logging in. From there they are able to create lists and assign them a month, then create tasks within their lists.
