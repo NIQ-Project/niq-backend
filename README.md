@@ -23,7 +23,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - Email, Password, Password Confirmation
   - Example:
-``const signUp = (credentials) => {
+``` js
+const signUp = (credentials) => {
   return axios({
     method: 'POST',
     url: apiUrl + '/sign-up/',
@@ -35,7 +36,8 @@ Our goals for this project is to work as an agile team and work together to prob
       }
     }
   })
-}``
+}
+```
 
 ### `/sign-in`
 - Used for signing in a user
@@ -43,7 +45,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - Email, Password
   - Example:
-  - ``const signIn = (credentials) => {
+``` js
+const signIn = (credentials) => {
   return axios({
     url: apiUrl + '/sign-in/',
     method: 'POST',
@@ -54,7 +57,8 @@ Our goals for this project is to work as an agile team and work together to prob
       }
     }
   })
-}``
+}
+```
 
 ### `/sign-out`
 - Used for signing out a user
@@ -62,7 +66,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const signOut = (user) => {
+``` js
+const signOut = (user) => {
   return axios({
     url: apiUrl + '/sign-out/',
     method: 'DELETE',
@@ -70,14 +75,16 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/change-password`
 - Used for changing a users password
 - Expects:
   - User Token, Old Password, New Password
   - Example:
-  - ``const changePassword = (passwords, user) => {
+``` js
+const changePassword = (passwords, user) => {
   return axios({
     url: apiUrl + '/change-password/',
     method: 'PATCH',
@@ -91,7 +98,8 @@ Our goals for this project is to work as an agile team and work together to prob
       }
     }
   })
-}``
+}
+```
 
 ### `/lists`
 - Used for show all list
@@ -99,7 +107,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects: 
   - User Token
   - Example:
-  - ``const indexList = (user) => {
+``` js
+const indexList = (user) => {
   return axios({
     url: apiUrl + '/lists',
     method: 'get',
@@ -107,7 +116,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/lists`
 - Used to create a list 
@@ -115,7 +125,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const createList = (data, user) => {
+``` js
+const createList = (data, user) => {
   return axios({
     url: apiUrl + '/lists',
     method: 'post',
@@ -124,7 +135,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/lists/:id`
 - Used for getting a single list
@@ -132,7 +144,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``export const showList = (id, user) => {
+``` js
+const showList = (id, user) => {
   return axios({
     url: apiUrl + '/lists/' + id,
     method: 'get',
@@ -140,7 +153,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/lists/:id`
 - Used to update a list
@@ -148,7 +162,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token, List Name, List Month
   - Example:
-  - ``const updateList = (listData, id, user) => {
+``` js
+const updateList = (listData, id, user) => {
   return axios({
     method: 'PATCH',
     url: apiUrl + '/lists/' + id,
@@ -157,7 +172,8 @@ Our goals for this project is to work as an agile team and work together to prob
     },
     data: { list: listData }
   })
-}``
+}
+```
 
 ### `/lists/:id`
 - Used for deleting a list
@@ -165,7 +181,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const deleteList = (id, user) => {
+``` js
+const deleteList = (id, user) => {
   return axios({
     url: apiUrl + '/lists/' + id,
     method: 'delete',
@@ -173,7 +190,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/tasks/:id`
 - Used for creating a task
@@ -181,7 +199,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const createTask = (id, data, user) => {
+``` js
+const createTask = (id, data, user) => {
   return axios({
     url: apiUrl + '/tasks/' + id,
     method: 'post',
@@ -190,7 +209,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/tasks/:id/:taskId`
 - Used for showing task
@@ -198,7 +218,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const showTask = (id, user, taskId) => {
+``` js
+const showTask = (id, user, taskId) => {
   return axios({
     url: apiUrl + '/tasks/' + id + '/' + taskId,
     method: 'get',
@@ -206,7 +227,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 ### `/tasks/:id/:taskId`
 - Used for updating a task
@@ -214,7 +236,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token, Task Name, Task Done
   - Example:
-  - ``const updateTask = (taskData, id, user, taskId) => {
+``` js
+const updateTask = (taskData, id, user, taskId) => {
   return axios({
     method: 'PATCH',
     url: apiUrl + '/tasks/' + id + '/' + taskId,
@@ -223,7 +246,8 @@ Our goals for this project is to work as an agile team and work together to prob
     },
     data: { task: taskData }
   })
-}``
+}
+```
 
 ### `/tasks/:id/:taskId`
 - Used for deleting a task
@@ -231,7 +255,8 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - User Token
   - Example:
-  - ``const deleteTask = (id, user, taskId) => {
+``` js
+const deleteTask = (id, user, taskId) => {
   return axios({
     url: apiUrl + '/tasks/' + id + '/' + taskId,
     method: 'delete',
@@ -239,7 +264,8 @@ Our goals for this project is to work as an agile team and work together to prob
       Authorization: `Bearer ${user.token}`
     }
   })
-}``
+}
+```
 
 
 
