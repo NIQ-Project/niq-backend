@@ -23,7 +23,7 @@ Our goals for this project is to work as an agile team and work together to prob
 - Expects:
   - Email, Password, Password Confirmation
   - Example:
-  - ``const signUp = (credentials) => {
+``const signUp = (credentials) => {
   return axios({
     method: 'POST',
     url: apiUrl + '/sign-up/',
